@@ -2,7 +2,7 @@
 const express = require('express');
 
 // Import personal files
-const htmlRoute = require('./routes/htmlRoutes');
+const htmlRoutes = require('./routes/htmlRoutes');
 
 // Set PORT. NOTE: Herokus apps are served using port 80. When Heroku runs the app, it sets the environment variable `process.env.PORT`
 const PORT = process.env.PORT || 3001;
@@ -16,6 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Allow us to use the files in the public folder
 app.use(express.static('public'));
+
+// Use API Routes
+// Route to the HTMLRoutes folder
+app.use('/', htmlRoutes);
 
 // Make the server listen
 app.listen(PORT, () => {
