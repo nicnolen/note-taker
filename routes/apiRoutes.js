@@ -10,10 +10,7 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 // Import personal files
-// File to make new notes
-const newNotes = require('../db/newNotes');
-// File to post new notes
-let { notes } = require('../db/db.json');
+const db = require('../db/db.json');
 
 /* ROUTING */
 // API GET request
@@ -41,6 +38,29 @@ router.post('/notes', (req, res) => {
       text: req.body.text,
     };
 
+    fs.readFile('./db/db.json', 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+      } else {
+        const parsedNote = JSON.parse(data);
+        parsedNote.push(newNote);
+      }
+    });
+
+    // write the string to a file
+    fs.writeFile('../db/db.json', newNoteString, err => {
+      if (err) {
+        console.error(err);
+      } else {
+        path.join(__dirname, '../db/db.json'),
+          // Convert the data to a string so we can save it
+          // first parameter is the value to be converted to a json string
+          // second parameter is used to filter the stringify. If null or blank, all objects are inluded
+          // third parameter is used to control spacing of the JSON up to 10 characters
+          JSON.stringify(parsedNote, null, 2);
+      }
+    });
+
     const response = {
       status: 'success',
       body: newNote,
@@ -48,6 +68,7 @@ router.post('/notes', (req, res) => {
 
     console.info(response);
     res.json(response);
+    db.push(newNote);
   } else {
     res.json('Please input a title and body to create a note!');
   }
