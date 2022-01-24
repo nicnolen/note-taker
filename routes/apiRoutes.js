@@ -37,7 +37,7 @@ router.post('/notes', (req, res) => {
       title: req.body.title,
       text: req.body.text,
     };
-
+    let parsedNote;
     fs.readFile('./db/db.json', 'utf8', (err, data) => {
       if (err) {
         console.error(err);
@@ -48,7 +48,7 @@ router.post('/notes', (req, res) => {
     });
 
     // write the string to a file
-    fs.writeFile('../db/db.json', newNoteString, err => {
+    fs.writeFile('../db/db.json', parsedNote, err => {
       if (err) {
         console.error(err);
       } else {
