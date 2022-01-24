@@ -1,15 +1,16 @@
 // Import dependencies
 const express = require('express');
+// Path lets us create relative paths to come from the local host or heroku depoloyment instead of our computer
+const path = require('path');
 
 // Import personal files
 const apiRoutes = require('./routes/apiRoutes');
 const htmlRoutes = require('./routes/htmlRoutes');
 
-// Initialize the app by running the express() function
-const app = express();
-
 // Set PORT. NOTE: Herokus apps are served using port 80. When Heroku runs the app, it sets the environment variable `process.env.PORT`
 const PORT = process.env.PORT || 3001;
+// Initialize the app by running the express() function
+const app = express();
 
 // Tells Express.js how to handle data parsing
 // What sort of encoding we are going to do for our URL. When you do a post and send the URL sometimes plain text is sent across and you dont want that with something like a password

@@ -2,10 +2,18 @@
 // Import dependencies
 const fs = require('fs');
 const router = require('express').Router();
+// Path lets us create relative paths to come from the local host or heroku depoloyment instead of our computer
+const path = require('path');
 
 // Import node packages
 // Import uuid which generates unque ids for each note
 const { v4: uuidv4 } = require('uuid');
+
+// Import personal files
+// File to make new notes
+const newNotes = require('../db/newNotes');
+// File to post new notes
+let { notes } = require('../db/db.json');
 
 /* ROUTING */
 // API GET request
@@ -20,27 +28,29 @@ router.get('/notes', (req, res) => {
 
 // POST REQUESTS
 router.post('/notes', (req, res) => {
-  // extracted new note from request body
-  const newNote = (req.body);
+  // Destructure the items in req.body
+  const { title, text } = req.body;
 
-  // read data from 'db.json' file
-  fs.readFile('./db/db.json', (err, data) => {
-    if (err) throw err;
+  // If all the required properties are present
+  if (title && text) {
+    // variable for the object will save
+    const newNote = {
+      // gives notes unique id with uuid
+      id: uuidv4(),
+      title: req.body.title,
+      text: req.body.text,
+    };
 
-    // assigned unique id's for each not using the UUID npm package
-    notes.id = uuidv4();
+    const response = {
+      status: 'success',
+      body: newNote,
+    };
 
-    const notes = JSON.parse(data);
-    // pushed the new note to 'db.json'
-    notes.push(newNote);
-
-    // revert notes object to string and rewrite it to the respective file for later use
-    fs.writeFile('./db/db.json', JSON.stringify(notes), err => {
-      if (err) throw err;
-    });
-  });
-  // send response
-  res.json(newNote);
+    console.info(response);
+    res.json(response);
+  } else {
+    res.json('Please input a title and body to create a note!');
+  }
 });
 
 // Export the file
