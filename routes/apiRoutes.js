@@ -42,7 +42,7 @@ router.post('/notes', (req, res) => {
       if (err) {
         console.error(err);
       } else {
-        const parsedNote = JSON.parse(data);
+        parsedNote = JSON.parse(data);
         parsedNote.push(newNote);
       }
     });
