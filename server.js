@@ -1,7 +1,5 @@
 // Import dependencies
 const express = require('express');
-// Path lets us create relative paths to come from the local host or heroku depoloyment instead of our computer
-const path = require('path');
 
 // Import personal files
 const apiRoutes = require('./routes/apiRoutes');
@@ -28,5 +26,5 @@ app.use('/', htmlRoutes);
 
 // Make the server listen
 app.listen(PORT, () => {
-  console.log(`API server is now on port ${PORT}!`);
+  console.info(`API server is now on port ${PORT}!`);
 });
