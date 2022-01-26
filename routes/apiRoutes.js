@@ -23,21 +23,14 @@ router.get('/notes', (req, res) => {
 
 // POST REQUESTS
 router.post('/notes', (req, res) => {
-  // Destructure the items in req.body
-  const { title, text } = req.body;
+    // Destructure the items in req.body
+    const { title, text, } = req.body;
 
-  // If all the required properties are present
-  if (title && text) {
-    // add the note to req.body
-    db.push(req.body);
-
-    // variable for the object will save
-    const newNote = {
-      // gives notes unique id with uuid
-      title,
-      text,
-      id: uuidv4(),
-    };
+    // If all the required properties are present
+    if (title && text) {
+      // add the note to req.body
+      req.body.id = uuidv4()
+      db.push(req.body);
 
     // write the string to a file
     // The JSON.stringify parameters are as follows:
