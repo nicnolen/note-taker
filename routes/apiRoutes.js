@@ -1,46 +1,67 @@
 /* IMPORTS */
 // Import dependencies
-const fs = require('fs');
 const router = require('express').Router();
+const fs = require('fs');
 
 // Import node packages
 // Import uuid which generates unque ids for each note
 const { v4: uuidv4 } = require('uuid');
 
+// Import personal files
+const db = require('../db/db.json');
+
 /* ROUTING */
 // API GET request
 router.get('/notes', (req, res) => {
   // read `db.json` file
-  fs.readFile('./db/db.json', (err, data) => {
+  fs.readFile('./db/db.json', 'utf8', err => {
     if (err) throw err;
     // return the parsed saved notes
-    res.json(JSON.parse(data));
+    res.json(db);
   });
 });
 
 // POST REQUESTS
 router.post('/notes', (req, res) => {
-  // extracted new note from request body
-  const newNote = (req.body);
+  // Destructure the items in req.body
+  const { title, text } = req.body;
 
-  // read data from 'db.json' file
-  fs.readFile('./db/db.json', (err, data) => {
-    if (err) throw err;
+  // If all the required properties are present
+  if (title && text) {
+    // add the note to req.body
+    db.push(req.body);
 
-    // assigned unique id's for each not using the UUID npm package
-    notes.id = uuidv4();
+    // variable for the object will save
+    const newNote = {
+      // gives notes unique id with uuid
+      title,
+      text,
+      id: uuidv4(),
+    };
 
-    const notes = JSON.parse(data);
-    // pushed the new note to 'db.json'
-    notes.push(newNote);
-
-    // revert notes object to string and rewrite it to the respective file for later use
-    fs.writeFile('./db/db.json', JSON.stringify(notes), err => {
-      if (err) throw err;
+    // write the string to a file
+    // The JSON.stringify parameters are as follows:
+    // first parameter is the value to be converted to a json string
+    // second parameter is used to filter the stringify. If null or blank, all objects are inluded
+    // third parameter is used to control spacing of the JSON up to 10 characters
+    fs.writeFile('./db/db.json', JSON.stringify(db), err => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.info('New note added to JSON file!');
+      }
     });
-  });
-  // send response
-  res.json(newNote);
+
+    const response = {
+      status: 'success',
+      body: newNote,
+    };
+
+    console.info(response);
+    res.json(response);
+  } else {
+    res.json('Please input a title and body to create a note!');
+  }
 });
 
 // Export the file
