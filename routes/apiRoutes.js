@@ -8,7 +8,7 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
 // Import personal files
-const db = require('../db/db.json');
+let db = require('../db/db.json');
 
 /* ROUTING */
 // API GET request
@@ -23,14 +23,14 @@ router.get('/notes', (req, res) => {
 
 // POST REQUESTS
 router.post('/notes', (req, res) => {
-    // Destructure the items in req.body
-    const { title, text, } = req.body;
+  // Destructure the items in req.body
+  const { title, text } = req.body;
 
-    // If all the required properties are present
-    if (title && text) {
-      // add the note to req.body
-      req.body.id = uuidv4()
-      db.push(req.body);
+  // If all the required properties are present
+  if (title && text) {
+    // add the note to req.body
+    req.body.id = uuidv4();
+    db.push(req.body);
 
     // write the string to a file
     // The JSON.stringify parameters are as follows:
@@ -47,13 +47,43 @@ router.post('/notes', (req, res) => {
 
     const response = {
       status: 'success',
-      body: newNote,
+      body: db,
     };
 
     console.info(response);
     res.json(response);
   } else {
     res.json('Please input a title and body to create a note!');
+  }
+});
+
+// DELETE REQUEST
+router.delete('/notes/:id', (req, res) => {
+  // fetched id to delete
+  let noteId = req.params.id.toString();
+
+  if (noteId) {
+    // filter data to get notes except the one to delete
+    db = db.filter(note => note.id.toString() !== noteId);
+
+    // write the new data to the 'db.json' file
+    fs.writeFile('./db/db.json', JSON.stringify(db), err => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.info('Note successfully deleted!');
+      }
+    });
+
+    const response = {
+      status: 'success',
+      body: db,
+    };
+
+    console.info(response);
+    res.json(response);
+  } else {
+    res.json('Note not found!');
   }
 });
 
