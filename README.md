@@ -91,7 +91,7 @@ For a visual walkthrough about how to create the team profile, click on the link
 Permission to use this application is granted under the MIT license.
 Click on the link for more information: [MIT License Information](https://opensource.org/licenses/MIT)
 
-## Tests
+## Testing
 
 Tests have been written in the `__tests__` folder to check if an object has the required properties using the `inputCheck.js` file located in the `utils` folder. If the object does have the required properties, `inputCheck()` returns null. If the object's property is blank or doesn't exist, an error is added to errors array. To run the tests, first make sure Jest is installed by checking the `package.json` file. If Jest is not installed, refer to the Installation section above. After confirming that Jest is installed, type `npm test` into the command line and a series of tests will be returned.
 
