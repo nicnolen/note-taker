@@ -84,7 +84,7 @@ When you click the save button, a new note will appear in the left hand column.
 To see the deployed version of the app, follow this link: https://protected-basin-46289.herokuapp.com/
 
 ### Visual Walkthrough
-For a visual walkthrough about how to create the team profile, click on the link: 
+For a visual walkthrough about how to create the team profile, click on the link: https://watch.screencastify.com/v/7gfWfCTKUYpmEIO2JYBc
 
 ## License
 
