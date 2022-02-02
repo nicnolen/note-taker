@@ -1,5 +1,3 @@
-# Note Taker Starter Code
-
 # Note Taker
 
 ![MIT License](https://img.shields.io/badge/license-MIT-important)
